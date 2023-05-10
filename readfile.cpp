@@ -16,7 +16,7 @@
 using namespace std;
 using namespace cv;
 //read training list
-void readList(string& listFilePath, vector<string>& facesPath, vector<string>& facesID)
+void readList(string& listFilePath, vector<string>& facesPath)
 {
     ifstream file(listFilePath.c_str(), ifstream::in);
     
@@ -28,7 +28,7 @@ void readList(string& listFilePath, vector<string>& facesPath, vector<string>& f
     string line, path, id;
     while (getline(file, line)) {
         stringstream lines(line);
-        getline(lines, id, ';');
+        // getline(lines, id, ';');
         getline(lines, path);
         
         path.erase(remove(path.begin(), path.end(), '\r'), path.end());
@@ -37,7 +37,7 @@ void readList(string& listFilePath, vector<string>& facesPath, vector<string>& f
         
         facesPath.push_back(path);
         //facesID.push_back(atoi(id.c_str()));
-        facesID.push_back(id);
+        // facesID.push_back(id);
     }
 }
 
@@ -46,12 +46,12 @@ using namespace std;
 
 int main(int argc, char** argv)
 {
-    string trainListFilePath = "E:\\SBME 6th Term\\Computer Vision\\Projects & Tasks\\CV Final Project\\Repo\\CV_It-is-me\\list\\train_list.txt";
+    string trainListFilePath = "E:\\SBME 6th Term\\Computer Vision\\Projects & Tasks\\CV Final Project\\Repo\\CV_It-is-me\\images_list.txt";
     vector<string> trainFacesPath;
     vector<string> trainFacesID;
     // vector<string> loadedFacesID;
     //read training list and ID from txt file
-    readList(trainListFilePath, trainFacesPath, trainFacesID);
+    readList(trainListFilePath, trainFacesPath);
 
     // print trainFacesPath 
     for (int i = 0; i < trainFacesPath.size(); i++)
