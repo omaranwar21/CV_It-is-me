@@ -4,10 +4,7 @@
 using namespace std;
 using namespace cv;
 
-int main(int, char**) {
-    Mat image = cv::imread("C:\\Users\\Anwar\\Desktop\\test8.jpg");
-    // convert to gray
-    // cvtColor(image, image, COLOR_BGR2GRAY);
+Mat face_detection(Mat image){
     CascadeClassifier face_cascade;
     face_cascade.load("C:\\Users\\Anwar\\Desktop\\CV Task 5\\haarcascade_frontalface_alt.xml");
 
@@ -17,6 +14,13 @@ int main(int, char**) {
     for (const auto& face : faces) {
         rectangle(image, face, Scalar(0, 255, 0), 2);
     }
+
+    return image;
+} 
+int main(int, char**) {
+    Mat image = cv::imread("C:\\Users\\Anwar\\Desktop\\test8.jpg");
+
+    image = face_detection(image);
 
     imshow("Face detection", image);
     waitKey(0);
