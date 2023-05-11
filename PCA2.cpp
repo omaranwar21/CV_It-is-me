@@ -7,7 +7,7 @@ using namespace cv;
 
 vector<Mat> readImages(vector<string> trainFacesPath)
 {
-    string folder_path = "C:\\Users\\Anwar\\Desktop\\CV Task 5\\cropped_faces";
+    string folder_path = "E:\\SBME 6th Term\\Computer Vision\\Projects & Tasks\\CV Final Project\\CV_It-is-me\\Images\\Train";
     vector<Mat> images;
 
     for (const auto &filename : trainFacesPath)
@@ -132,14 +132,17 @@ vector<Mat> PCA_Matrix(vector<Mat> images)
 
 int main(int argc, char const *argv[])
 {
-    string trainListFilePath = "C:\\Users\\Anwar\\Desktop\\CV Task 5\\images_list.txt";
+    string trainListFilePath = "E:\\SBME 6th Term\\Computer Vision\\Projects & Tasks\\CV Final Project\\CV_It-is-me\\Train_images_list.txt";
     vector<Mat> images = readList(trainListFilePath);
     vector<Mat> data_covarianceMatrix = PCA_Matrix(images);
 
     Mat eigenvalues, eigenvectors;
     eigen(data_covarianceMatrix[0], eigenvalues, eigenvectors);
+    cout << "----------Eigen Values--------------" << endl;
     cout << eigenvalues.rows << "," << eigenvalues.cols << endl;
-    cout << "------------------------" << endl;
+
+    cout << "-----------Eigen Vectors-------------" << endl;
+    cout << eigenvectors.rows << "," << eigenvectors.cols << endl;
     vector<pair<float, Mat>> pairs;
 
     for (int i = 0; i < eigenvectors.cols; i++)
@@ -163,9 +166,10 @@ int main(int argc, char const *argv[])
     // {
     //     /* code */
     // }
+    cout << "-----------Sorted Vectors-------------" << endl;
+    cout << sortedEigenvecs.rows << "," << sortedEigenvecs.cols << endl;
 
-    cout << sortedEigenvecs.rows << endl;
-    cout << sortedEigenvecs.cols << endl;
+    
     
     imshow("sortedEigenvecs", sortedEigenvecs);
 
