@@ -393,19 +393,6 @@ Mat project_image(const Mat &image, const Mat &mean_face, const Mat &eigenfaces)
 
 
 
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-
 
 
 // Computes the distance between two image projections
@@ -456,23 +443,12 @@ string recognize_face( Mat &Training_images_weights, Mat &weights, vector<string
 }
 
 
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 
 int main()
 {
     // Set the directory containing the training images
-    string training_dir = "E:\\computer-vision\\match\\Training_file";
+    string training_dir = "E:\\SBME 6th Term\\Computer Vision\\Projects & Tasks\\CV Final Project\\CV_It-is-me\\cropped_faces";
 
     // Manually specify the labels and file names for each person
     vector<string> person1_files = {
@@ -554,7 +530,7 @@ int main()
 
 
     // Set the directory containing the test images
-    string test_dir = "E:\\computer-vision\\match\\Test_file";
+    string test_dir = "E:\\SBME 6th Term\\Computer Vision\\Projects & Tasks\\CV Final Project\\CV_It-is-me\\cropped_faces";
 
     // Manually specify the file names for each test image
     vector<string> test_files = { test_dir + "\\s02_15.jpg",

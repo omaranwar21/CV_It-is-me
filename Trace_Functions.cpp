@@ -9,12 +9,15 @@ Mat allFacesMatrix;         //done
 Mat avgVector;              //done
 Mat subFacesMatrix;         //done
 Mat covarianceMatrix;       //done
-Mat allEigenValues;
-Mat allEigenVectors;
-Mat eigenVector;
-Mat weights;
+Mat allEigenValues;         //done
+Mat allEigenVectors;        //done
+Mat K_eigen_vectors;
+Mat eigenVector;        //done
+Mat weights;        //done
 int imgSize = -1;//Dimension of features
 int imgRows = -1;//row# of image
+
+#define EIGEN_VECTORS_NUMBER 35
 
 vector<Mat> readImages(vector<string> trainFacesPath)
 {
@@ -76,10 +79,67 @@ Mat read_test_image(string test_image_name)
 Mat test_image_to_vector(Mat testimage)
 {
     Mat test_image_vector;
+    testimage.convertTo(testimage, CV_32FC1);
     testimage.reshape(1, imgSize).copyTo(test_image_vector);
     return test_image_vector;
 }
 
+Mat normalize_test_img(Mat test_image_vector , Mat avgVector )
+{
+        // subtract test_image_vector from avgVector
+    Mat normalized_test_img = avgVector.clone();
+    for (int i = 0; i< avgVector.rows; i++)
+    {
+        normalized_test_img.at<float>(i,0) = test_image_vector.at<float>(i,0) - avgVector.at<float>(i,0);
+    }
+    return normalized_test_img;
+}
+Mat calulate_test_weight(Mat normalized_test_img , Mat eigenVector )
+{
+
+// Mat diff = weights.clone();
+// for (int r = 0 ; r< weights.rows; r++ )
+// {
+//     for (int c = 0 ; c< weights.cols; c++ )
+//     {
+//         diff.at<float>(r,c) = weights.at<float>(r,c) - test_weight.at<float>(r,0);
+//     }
+// }
+
+    // // Mat diff = weights - test_weight;
+    // cout << "diff size: " << diff.size() << endl;   
+    // cout << diff.at<float>(0, 0) << endl;
+    // // calculate norm vector
+    // vector<float> Norm_Vector ;
+    // float norm;
+    // for (int r = 0 ; r< diff.rows; r++ )
+    // {
+    //     norm = 0;
+    //     for (int c = 0 ; c< diff.cols; c++ )
+    //     {
+    //         norm += pow(diff.at<float>(r, c), 2);
+    //     }
+    //     norm = sqrt(norm);
+    //     Norm_Vector.push_back(norm);
+    // }
+
+
+
+
+    Mat test_weight =  normalized_test_img.t() * eigenVector.t();
+    return test_weight;
+}
+
+vector<double>  calulate_eucledien_distance(Mat weights , Mat test_weight )
+{
+    vector<double> eucledien_distance ;
+    for(int i=0; i< 50 ; i++)
+    {
+        double dist = norm(weights.row(i), test_weight, NORM_L2);
+        eucledien_distance.push_back(dist);
+    }    
+    return eucledien_distance;
+}
 
 void PCA_getImgSize(Mat sampleImg)
 {
@@ -152,32 +212,21 @@ Mat dot_product(Mat image1 , Mat image2)
 void PCA_getBestEigenVectors(Mat covarianceMatrix)
 {
     //Get all eigenvalues and eigenvectors from covariance matrix
-    
     eigen(covarianceMatrix, allEigenValues, allEigenVectors);
 
-    // print type of all eigen vectos
-    cout << "EigenVector type: " << allEigenVectors.type() << endl; 
+    // select best k eigen vectors
+    K_eigen_vectors = Mat::zeros(EIGEN_VECTORS_NUMBER, allEigenVectors.cols, CV_32FC1); 
+    allEigenVectors.rowRange(Range(0, EIGEN_VECTORS_NUMBER)).copyTo(K_eigen_vectors); 
 
-    cout << allEigenVectors.at<float>(0, 0) << endl;
-    cout << "OLD EigenVector size: " << allEigenVectors.size() << endl;
-    cout << "EigenValues size: " << allEigenValues.size() << endl;
-    eigenVector = allEigenVectors * (subFacesMatrix.t());
-    //Normalize eigenvectors
-    // for(int i = 0; i < eigenVector.rows; i++ )
-    // {
-    //     Mat tempVec = eigenVector.row(i);
-    //     normalize(tempVec, tempVec);
-    // }
-    // eigenVector = subFacesMatrix * eigenVector;
     cout << "EigenVector size: " << eigenVector.size() << endl;
+    cout << "K_eigen_vectors size: " << K_eigen_vectors.size() << endl;
     cout << "subFacesMatrix size: " << subFacesMatrix.size() << endl;
 
-    // calculate weights
-    // Mat weights = dot_product( eigenVector ,  subFacesMatrix);
-    // weights =  eigenVector *  subFacesMatrix;
-    
-    // cout << weights.at<float>(0, 0) << endl;
+    // convert lower dimension to original dimension
+    eigenVector = K_eigen_vectors * (subFacesMatrix.t());
 
+    // calculate weights
+    weights =  subFacesMatrix.t() * eigenVector.t();
 }
 //PCA Algorithm
 void PCA_init(vector<Mat> images)
