@@ -201,7 +201,7 @@ int main(int argc, char const *argv[])
     cout << "weights size: " << weights.size() << endl;
     cout << weights.at<float>(0, 0) << endl;
 
-    Mat test_image = read_test_image( "s01_14.jpg");
+    Mat test_image = read_test_image( "s01_12.jpg");
     // namedWindow("test_image", WINDOW_NORMAL);
     // imshow("test_image", test_image);
     // waitKey(0);
@@ -232,7 +232,7 @@ int main(int argc, char const *argv[])
     cout << "EigenVector type: " << eigenVector.type() << endl;
     cout << "test_sub_avgVector type: " << test_sub_avgVector.type() << endl;
 
-    Mat test_weight = eigenVector * test_sub_avgVector;
+    Mat test_weight =  eigenVector* test_sub_avgVector;
     // Mat test_weight = eigenVector.dot(test_sub_avgVector)  ;
 
     cout << "test_weight size: " << test_weight.size() << endl;
@@ -243,25 +243,37 @@ int main(int argc, char const *argv[])
     // cout << distance << endl;
     // weights - test weights 
     cout << "Before NORM" << endl;
-    vector<float> Norm_Vector ;
+    vector<double> Norm_Vector ;
     cout << "Weight COLS size: " << weights.col(1).size <<endl;
     cout << "Weight Rows size: " << weights.row(1).size <<endl;
     cout << "test_weight size: " << test_weight.size() << endl;
 
-    Mat new_weights = weights.clone();
-    new_weights.row(1).reshape(0, 50);
-    cout << "New Weight Rows size: " << new_weights.row(1).size <<endl;
+    // Mat new_weights ;
+    // new_weights.row(1).reshape(0, 50).copyTo(new_weights);
+    // cout << "New Weight Rows size: " << new_weights.size <<endl;
     
 
-    // for(int i=0; i< 50 ; i++)
-    // {
-    //     weights.row(i).reshape(0, 50);
-    //     double dist = norm(weights.col(i), test_weight, NORM_L2);
-    //     // double dist = norm(weights.col(i), test_weight, NORM_L2);
-    //     Norm_Vector.push_back(dist);
-    // }
+    for(int i=0; i< 50 ; i++)
+    {
+    //     new_weights =weights.clone();
+    //     new_weights.row(i).reshape(0, 50).copyTo(new_weights);
+
+    //     double dist = norm(new_weights, test_weight, NORM_L2);
+    
+        double dist = norm(weights.col(i), test_weight, NORM_L2);
+        // double dist = norm(weights.col(i), test_weight, NORM_L2);
+        Norm_Vector.push_back(dist);
+    }
+    // print test_weight
+    // cout << "test_weight size: " << test_weight.size() << endl;
+    // cout << test_weight << endl;
 
     cout << "AFTER NORM" << endl;
+    cout << weights.col(30)<<endl;
+
+    cout<< "New COL" << endl;
+
+    cout << weights.col(49)<<endl;
 
 
     // Mat diff = weights.clone();
@@ -294,10 +306,10 @@ int main(int argc, char const *argv[])
     cout << "Norm_Vector size: " << Norm_Vector.size() << endl;
     // print norm vector
 
-    // for (int i = 0; i < Norm_Vector.size(); i++)
-    // {
-    //     cout << Norm_Vector[i] << endl;
-    // }
+    for (int i = 0; i < Norm_Vector.size(); i++)
+    {
+        cout << Norm_Vector[i] << endl;
+    }
     auto it = min_element(Norm_Vector.begin(), Norm_Vector.end());
     int index = distance(Norm_Vector.begin(), it);
     cout << "INDEX = " << index <<endl;
