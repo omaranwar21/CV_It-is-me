@@ -218,12 +218,13 @@ void PCA_getBestEigenVectors(Mat covarianceMatrix)
     K_eigen_vectors = Mat::zeros(EIGEN_VECTORS_NUMBER, allEigenVectors.cols, CV_32FC1); 
     allEigenVectors.rowRange(Range(0, EIGEN_VECTORS_NUMBER)).copyTo(K_eigen_vectors); 
 
+    // convert lower dimension to original dimension
+    eigenVector = K_eigen_vectors * (subFacesMatrix.t());
+    
     cout << "EigenVector size: " << eigenVector.size() << endl;
     cout << "K_eigen_vectors size: " << K_eigen_vectors.size() << endl;
     cout << "subFacesMatrix size: " << subFacesMatrix.size() << endl;
 
-    // convert lower dimension to original dimension
-    eigenVector = K_eigen_vectors * (subFacesMatrix.t());
 
     // calculate weights
     weights =  subFacesMatrix.t() * eigenVector.t();

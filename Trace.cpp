@@ -5,7 +5,7 @@ int main(int argc, char const *argv[])
 
     /* ************ TRACING *********** /
     /* 1 - READ IMAGES  */
-    vector<Mat> images = readList( "E:\\SBME 6th Term\\Computer Vision\\Projects & Tasks\\CV Final Project\\CV_It-is-me\\Train_images_list.txt");
+    vector<Mat> images = readList( "E:\\SBME 6th Term\\Computer Vision\\Projects & Tasks\\CV Final Project\\CV_It-is-me\\Train_Images.txt");
     // cout << "IMAGES SIZE : "<< images.size()<<endl;
     
     PCA_init(images);
@@ -102,7 +102,7 @@ int main(int argc, char const *argv[])
     /* 3 - TEST Vectors */
     cout << "*********************************************************STEP 3*******************" << endl ;
 
-    Mat test_image = read_test_image( "s05_14.jpg");
+    Mat test_image = read_test_image( "s21_14.jpg");
     // // namedWindow("test_image", WINDOW_NORMAL);
     // // imshow("test_image", test_image);
     // // waitKey(0);
