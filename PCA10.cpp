@@ -9,7 +9,7 @@
 using namespace cv;
 using namespace std;
 
-#define EIGEN_VECTORS_NUMBER 4000
+#define EIGEN_VECTORS_NUMBER 3250
 
 #define ROW_PIXELS 100
 #define COL_PIXELS 100
@@ -47,16 +47,13 @@ Mat load_images(const vector<string> &image_files , string training_dir)
             cerr << "Failed to load image " << filename << endl;
             continue;
         }
-
         // Convert image to 32-bit floating-point format
         image.convertTo(image, CV_32F);
-
         // Resize the image to match the size of the first image
         if (image.size() != image_size)
         {
             resize(image, image, image_size);
         }
-
         // Create an empty column for this image
         Mat column(total_pixels, 1, image.type());
 
@@ -95,9 +92,6 @@ Mat compute_eigenfaces(const Mat &images, Mat &mean, Mat &eigenvectors)
     Mat centered_trans = centered.t();
     Mat mean_trans = mean.t();
 
-    // cout << " the output centered trans: "<< endl << centered_trans<< endl;
-    // cout << " the output mean_trans      : " << endl<< mean_trans << endl;
-
     Mat covar;
     Mat mean_test;
 
@@ -110,20 +104,7 @@ Mat compute_eigenfaces(const Mat &images, Mat &mean, Mat &eigenvectors)
 
     Mat eigenfaces = eigenvectors.rowRange(0, EIGEN_VECTORS_NUMBER).clone();
 
-    // eigenvectors = eigenfaces;
-
-    // Sort eigenvectors by decreasing eigenvalues
-    // Mat sorted = eigenvectors.t();
-
-    // Select the top k eigenvectors
-    // int k = min(images.rows, images.cols);
-    // if (k > sorted.rows)
-    // {
-    //     k = sorted.rows;
-    // }
-    // eigenfaces = sorted.rowRange(0, k).clone();
-
-    
+    eigenvectors = eigenfaces;
 
     Mat centered_converted;
     centered.convertTo(centered_converted, eigenvectors.type()); // convert the data type of centered to match the type of eigenvectors.t()
@@ -174,15 +155,7 @@ Mat project_image(const Mat &image, const Mat &mean_face, const Mat &eigenfaces)
     // Subtract mean face image from input image
     Mat centered = Test_image_converted - mean_face_trans;
 
-    Mat covar;
     Mat centered_transpose = centered.t();
-
-    Mat mean_test;
-
-    calcCovarMatrix(centered, covar, mean_test, COVAR_ROWS);
-
-    Mat eigenvalues;
-    eigen(covar, eigenvalues, eigenfaces);
 
     Mat centered_converted;
     centered_transpose.convertTo(centered_converted, eigenfaces.type()); // convert the data type of centered to match the type of eigenvectors.t()
@@ -261,13 +234,46 @@ string string_split(string input,string delimiter = "_")
     return token;
 }
 
+// read training list
+vector<string> readList(string listFilePath)
+{
+    vector<string> facesPath;
+    ifstream file(listFilePath.c_str(), ifstream::in);
+
+    if (!file)
+    {
+        cout << "Fail to open file: " << listFilePath << endl;
+        exit(0);
+    }
+
+    string line, path, id;
+    while (getline(file, line))
+    {
+        stringstream lines(line);
+        getline(lines, path);
+
+        path.erase(remove(path.begin(), path.end(), '\r'), path.end());
+        path.erase(remove(path.begin(), path.end(), '\n'), path.end());
+        path.erase(remove(path.begin(), path.end(), ' '), path.end());
+
+        facesPath.push_back(path);
+    }
+    // vector<Mat> images = readImages(facesPath);
+    return facesPath;
+}
+
+
 int main()
 {
     // Set the directory containing the training images
     string training_dir = "E:\\SBME 6th Term\\Computer Vision\\Projects & Tasks\\CV Final Project\\CV_It-is-me\\cropped_faces";
 
+    string training_script_file = "E:\\SBME 6th Term\\Computer Vision\\Projects & Tasks\\CV Final Project\\CV_It-is-me\\Train_Images.txt";
 
     // Combine the file name vectors into a single vector
+
+    // vector<string> image_files = readList(training_script_file);
+
     vector<string> image_files;
 
     string file_name;
@@ -275,10 +281,10 @@ int main()
     {
         for (int sample = 1; sample <= 9; sample++)
         {
-            if(sub == 4)
-            {
-                continue;
-            }
+            // if(sub == 4)
+            // {
+            //     continue;
+            // }
             file_name = "s0"+ std::to_string(sub)+ "_0"+  std::to_string(sample)+  +".jpg" ;
             image_files.push_back(file_name);
             cout << "Train path " << file_name << endl ;
@@ -308,6 +314,8 @@ int main()
     // Set the directory containing the test images
     string test_dir = "E:\\SBME 6th Term\\Computer Vision\\Projects & Tasks\\CV Final Project\\CV_It-is-me\\cropped_faces";
 
+    // string test_script_file = "E:\\SBME 6th Term\\Computer Vision\\Projects & Tasks\\CV Final Project\\CV_It-is-me\\Test_Images.txt";
+    // vector<string> test_files = readList(test_script_file);
 
     vector<string> test_files ;
     string test_file_name;
