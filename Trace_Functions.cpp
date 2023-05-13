@@ -19,50 +19,50 @@ int imgRows = -1;//row# of image
 
 #define EIGEN_VECTORS_NUMBER 35
 
-vector<Mat> readImages(vector<string> trainFacesPath)
-{
-    string folder_path = "E:\\SBME 6th Term\\Computer Vision\\Projects & Tasks\\CV Final Project\\CV_It-is-me\\Images\\Train";
-    vector<Mat> images;
-    for (const auto &filename : trainFacesPath)
-    {
-        string file_path = folder_path + "\\" + filename;
-        Mat img = imread(file_path);
-        resize(img, img, Size(100, 100));
-        // convert to gray
-        cvtColor(img, img, COLOR_BGR2GRAY);
-        images.push_back(img);
-    }
-    cout << "Number of images: " << images.size() << endl;
-    return images;
-}
+// vector<Mat> readImages(vector<string> trainFacesPath)
+// {
+//     string folder_path = "E:\\SBME 6th Term\\Computer Vision\\Projects & Tasks\\CV Final Project\\CV_It-is-me\\Images\\Train";
+//     vector<Mat> images;
+//     for (const auto &filename : trainFacesPath)
+//     {
+//         string file_path = folder_path + "\\" + filename;
+//         Mat img = imread(file_path);
+//         resize(img, img, Size(100, 100));
+//         // convert to gray
+//         cvtColor(img, img, COLOR_BGR2GRAY);
+//         images.push_back(img);
+//     }
+//     cout << "Number of images: " << images.size() << endl;
+//     return images;
+// }
 
-// read training list
-vector<Mat> readList(string listFilePath)
-{
-    vector<string> facesPath;
-    ifstream file(listFilePath.c_str(), ifstream::in);
+// // read training list
+// vector<Mat> readList(string listFilePath)
+// {
+//     vector<string> facesPath;
+//     ifstream file(listFilePath.c_str(), ifstream::in);
 
-    if (!file)
-    {
-        cout << "Fail to open file: " << listFilePath << endl;
-        exit(0);
-    }
+//     if (!file)
+//     {
+//         cout << "Fail to open file: " << listFilePath << endl;
+//         exit(0);
+//     }
 
-    string line, path, id;
-    while (getline(file, line))
-    {
-        stringstream lines(line);
-        getline(lines, path);
+//     string line, path, id;
+//     while (getline(file, line))
+//     {
+//         stringstream lines(line);
+//         getline(lines, path);
 
-        path.erase(remove(path.begin(), path.end(), '\r'), path.end());
-        path.erase(remove(path.begin(), path.end(), '\n'), path.end());
-        path.erase(remove(path.begin(), path.end(), ' '), path.end());
+//         path.erase(remove(path.begin(), path.end(), '\r'), path.end());
+//         path.erase(remove(path.begin(), path.end(), '\n'), path.end());
+//         path.erase(remove(path.begin(), path.end(), ' '), path.end());
 
-        facesPath.push_back(path);
-    }
-    vector<Mat> images = readImages(facesPath);
-    return images;
-}
+//         facesPath.push_back(path);
+//     }
+//     vector<Mat> images = readImages(facesPath);
+//     return images;
+// }
 
 
 Mat read_test_image(string test_image_name)
