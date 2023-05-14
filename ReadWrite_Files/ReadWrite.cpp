@@ -40,7 +40,7 @@ vector<string> ReadWrite::readList(string listFilePath){
 
         path.erase(remove(path.begin(), path.end(), '\r'), path.end());
         path.erase(remove(path.begin(), path.end(), '\n'), path.end());
-        path.erase(remove(path.begin(), path.end(), ' '), path.end());
+        // path.erase(remove(path.begin(), path.end(), ' '), path.end());
 
         facesPath.push_back(path);
     }
