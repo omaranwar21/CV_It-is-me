@@ -1,34 +1,25 @@
-#include <opencv2/opencv.hpp>
-#include <iostream>
-#include <fstream>
+#include "ReadWrite.hpp"
+// class ReadWrite{
+//     public:
+//         ReadWrite();
+//         vector<string> readList(string listFilePath);
+//         vector<Mat> readImages(string folder_path, vector<string> trainFacesPath);
+//         void writeData(Mat avgVector, Mat eigenVector, Mat weights);
+//         vector<Mat> readData();
 
-#include <vector>
-#include <string>
-#include <numeric>
+//     private:
+//         void writeMean(Mat avg);
+//         void writeEigenVectors(Mat eigen);
+//         void writeWeights(Mat weights);
+//         Mat readMean();
+//         Mat readEigen();
+//         Mat readWeights();
+//         int noOfRows;
+// };
 
-using namespace cv;
-using namespace std;
-
-class ReadWrite{
-    public:
-        ReadWrite();
-        vector<string> readList(string listFilePath);
-        vector<Mat> readImages(string folder_path, vector<string> trainFacesPath);
-        void writeData(Mat avgVector, Mat eigenVector, Mat weights);
-        vector<Mat> readData();
-
-    private:
-        void writeMean(Mat avg);
-        void writeEigenVectors(Mat eigen);
-        void writeWeights(Mat weights);
-        Mat readMean();
-        Mat readEigen();
-        Mat readWeights();
-        int noOfRows;
-};
-
-ReadWrite::ReadWrite(){
+ReadWrite::ReadWrite(string write_folder_path){
     this->noOfRows = 0;
+    this->write_folder_path = write_folder_path;
 }
 
 vector<string> ReadWrite::readList(string listFilePath){
@@ -80,7 +71,7 @@ void ReadWrite::writeData(Mat avgVector, Mat eigenVector, Mat weights){
 
 void ReadWrite::writeMean(Mat avg)
 {
-    string meanPath = "C:\\Users\\Anwar\\Desktop\\CV Task 5\\mean.txt";
+    string meanPath = this->write_folder_path  + "//" + "mean.txt";
     ofstream writeMeanFile(meanPath.c_str(), ofstream::out | ofstream::trunc);
     if (!writeMeanFile) {
         cout << "Fail to open file: " << meanPath << endl;
@@ -96,7 +87,7 @@ void ReadWrite::writeMean(Mat avg)
 
 void ReadWrite::writeEigenVectors(Mat eigen)
 {
-    string eigenPath = "C:\\Users\\Anwar\\Desktop\\CV Task 5\\eigen.txt";
+    string eigenPath = this->write_folder_path  + "//" + "eigen.txt";
     ofstream writeEigenFile(eigenPath.c_str(), ofstream::out | ofstream::trunc);
     if (!writeEigenFile) {
         cout << "Fail to open file: " << eigenPath << endl;
@@ -115,7 +106,7 @@ void ReadWrite::writeEigenVectors(Mat eigen)
 
 void ReadWrite::writeWeights(Mat weights)
 {
-    string weightsPath = "C:\\Users\\Anwar\\Desktop\\CV Task 5\\weights.txt";
+    string weightsPath = this->write_folder_path  + "//" + "weights.txt";
     ofstream writeWeightsFile(weightsPath.c_str(), ofstream::out | ofstream::trunc);
     if (!writeWeightsFile) {
         cout << "Fail to open file: " << weightsPath << endl;
@@ -220,3 +211,4 @@ Mat ReadWrite::readWeights()
 }
 
 // class 
+

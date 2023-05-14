@@ -1,22 +1,22 @@
-#include <opencv2/opencv.hpp>
-#include <iostream>
-#include <fstream>
-#include "ReadWrite.hpp"
+#ifndef REDUCED_PCA_CLASS
 
-#include <vector>
-#include <string>
-#include <numeric>
+#define REDUCED_PCA_CLASS
 
-using namespace std;
-using namespace cv;
+#include "../common.hpp"
+
+#include "../ReadWrite_Files/ReadWrite.hpp"
+
+
+
+
 
 #define EIGEN_VECTORS_NUMBER 489
 
 class train_PCA
 {
     public:
-        train_PCA(vector<Mat> images);
-        void init(vector<Mat> images);
+        train_PCA(vector<Mat> images, ReadWrite p1);
+        void init(vector<Mat> images,  ReadWrite p1);
         Mat getAverageVector(); 
         Mat getEigenVectors(); 
         Mat getWeights(); 
@@ -39,3 +39,5 @@ class train_PCA
         int imgSize = -1;       // Dimension of features
         int imgRows = -1;       // row# of image
 };
+
+#endif
