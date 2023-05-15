@@ -77,6 +77,8 @@ void ReadWrite::writeMean(Mat avg)
         cout << "Fail to open file: " << meanPath << endl;
     }
     
+    writeMeanFile << this->noOfRows;
+    writeMeanFile << " ";
     for (int i = 0; i < avg.rows; i++) {
         writeMeanFile << avg.at<float>(i);
         writeMeanFile << " ";
@@ -146,10 +148,13 @@ Mat ReadWrite::readMean()
     for (int i = 0; i < 1; i++) {
         getline(readMean, line);
         stringstream lines(line);
-        for (int j = 0; j < mean.rows; j++) {
-            string data;
+        string data;
+        getline(lines, data, ' ');
+        this->noOfRows = (int)atof(data.c_str());
+        for (int j = 1; j <= mean.rows; j++) {
+                    string data;
             getline(lines, data, ' ');
-            mean.col(i).at<float>(j) = atof(data.c_str());
+            mean.col(i).at<float>(j-1) = atof(data.c_str());
         }
     }
     
