@@ -9,7 +9,7 @@
 using namespace cv;
 using namespace std;
 
-#define EIGEN_VECTORS_NUMBER 3000
+#define EIGEN_VECTORS_NUMBER 5000
 
 #define ROW_PIXELS 100
 #define COL_PIXELS 100
