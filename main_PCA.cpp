@@ -58,40 +58,40 @@ int main(int argc, char const *argv[])
     vector<Mat> test_images = r1.readImages(test_dir, test_files);
 
 
-    vector<int> test_pass;
-    // loop over test imags to start recognition
-    for (int i = 0; i < test_files.size(); i++)
-    {
-        cout << "------------------------------------------------------------------" << endl;
+    // vector<int> test_pass;
+    // // loop over test imags to start recognition
+    // for (int i = 0; i < test_files.size(); i++)
+    // {
+    //     cout << "------------------------------------------------------------------" << endl;
 
-        Mat test_weight = project_image(test_images[i], pca.getAverageVector(), pca.getEigenVectors());
-        /* 4 - Recognition  */
-        int index = recognize_face(pca.getWeights(), test_weight);
+    //     Mat test_weight = project_image(test_images[i], pca.getAverageVector(), pca.getEigenVectors());
+    //     /* 4 - Recognition  */
+    //     int index = recognize_face(pca.getWeights(), test_weight);
 
-        // string label = recognize_face(Training_images_weights, test_weights, labels);44
-        string test = string_split(test_files[i]);
-        string predicted = string_split(train_files[index]);
+    //     // string label = recognize_face(Training_images_weights, test_weights, labels);44
+    //     string test = string_split(test_files[i]);
+    //     string predicted = string_split(train_files[index]);
 
-        cout << "Test : " << test << " Predicted : " << predicted << endl;
-        if (test == predicted)
-        {
-            cout << "TRUE " << endl;
-            test_pass.push_back(1);
-        }
-        else
-        {
-            cout << "FALSE " << endl;
-            test_pass.push_back(0);
-            // cout << cut.compare(h) << endl ;
-        }
+    //     cout << "Test : " << test << " Predicted : " << predicted << endl;
+    //     if (test == predicted)
+    //     {
+    //         cout << "TRUE " << endl;
+    //         test_pass.push_back(1);
+    //     }
+    //     else
+    //     {
+    //         cout << "FALSE " << endl;
+    //         test_pass.push_back(0);
+    //         // cout << cut.compare(h) << endl ;
+    //     }
 
-        cout << " Recognized face in " << test_files[i] << " as " << train_files[index] << " by index : " << index << endl;
-    }
+    //     cout << " Recognized face in " << test_files[i] << " as " << train_files[index] << " by index : " << index << endl;
+    // }
 
-        // test_pass.
-    // float accuracy = test_pass.su
-    double accuracy = std::accumulate(test_pass.begin(), test_pass.end(), 0.0) / test_pass.size() * 100.0;
-    cout << "Accuracy: " << accuracy << "%" << endl;
+    //     // test_pass.
+    // // float accuracy = test_pass.su
+    // double accuracy = std::accumulate(test_pass.begin(), test_pass.end(), 0.0) / test_pass.size() * 100.0;
+    // cout << "Accuracy: " << accuracy << "%" << endl;
 
 
 
@@ -99,7 +99,7 @@ int main(int argc, char const *argv[])
 
 
     // vector<int> test_pass;
-    // vector<Mat> data = readData(489);
+    // vector<Mat> data = r1.readData();
     // // loop over test imags to start recognition
     // for (int i = 0; i < test_files.size(); i++)
     // {
@@ -132,6 +132,23 @@ int main(int argc, char const *argv[])
     // // float accuracy = test_pass.su
     // double accuracy = std::accumulate(test_pass.begin(), test_pass.end(), 0.0) / test_pass.size() * 100.0;
     // cout << "Accuracy: " << accuracy << "%" << endl;
+
+    // Debugging
+
+    vector<Mat> data = r1.readData();
+
+    Mat model_mean =   pca.getAverageVector() ;
+    Mat model_eigen =  pca.getEigenVectors() ;
+    Mat model_weights = pca.getWeights();
+
+    Mat files_mean =   data[0] ;
+    Mat files_eigen =  data[1] ;
+    Mat files_weights = data[2];
+
+    cout << "ENDED" << endl ;
+
+
+
 
     return 0;
 }

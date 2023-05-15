@@ -134,7 +134,8 @@ vector<Mat> ReadWrite::readData(){
 Mat ReadWrite::readMean()
 {
     Mat mean = Mat::zeros(10000, 1, CV_32FC1);
-    string meanPath = "C:\\Users\\Anwar\\Desktop\\CV Task 5\\mean.txt";
+    
+    string meanPath = this->write_folder_path + "\\mean.txt";
     ifstream readMean(meanPath.c_str(), ifstream::in);
     
     if (!readMean) {
@@ -160,7 +161,7 @@ Mat ReadWrite::readMean()
 Mat ReadWrite::readEigen()
 {
     Mat eigen = Mat::zeros(this->noOfRows, 10000, CV_32FC1);
-    string eigenPath = "C:\\Users\\Anwar\\Desktop\\CV Task 5\\eigen.txt";
+    string eigenPath = this->write_folder_path + "\\eigen.txt";
     ifstream readEigen(eigenPath.c_str(), ifstream::in);
     
     if (!readEigen) {
@@ -187,7 +188,7 @@ Mat ReadWrite::readWeights()
 {
     int noOfCols = this->noOfRows;
     Mat weights = Mat::zeros(this->noOfRows, noOfCols, CV_32FC1);
-    string weightsPath = "C:\\Users\\Anwar\\Desktop\\CV Task 5\\weights.txt";
+    string weightsPath = this->write_folder_path + "\\weights.txt";
     ifstream readweights(weightsPath.c_str(), ifstream::in);
     
     if (!readweights) {

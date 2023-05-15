@@ -7,7 +7,7 @@
 #include "../ReadWrite_Files/ReadWrite.hpp"
 
 
-#define EIGEN_VECTORS_NUMBER 109
+#define EIGEN_VECTORS_NUMBER 50
 
 class train_PCA
 {
