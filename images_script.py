@@ -24,7 +24,7 @@ team_test_path = "E:\SBME 6th Term\Computer Vision\Projects & Tasks\CV Final Pro
 
 # write_text_file(Test_path,  "Test_Images.txt")
 
-# write_text_file(detect_train_path,  "detect_train")
+write_text_file(detect_train_path,  "detect_train")
 
 # write_text_file(detect_test_path,  "detect_test")
 
