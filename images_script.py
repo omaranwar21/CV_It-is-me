@@ -28,7 +28,7 @@ write_text_file(detect_train_path,  "detect_train")
 
 # write_text_file(detect_test_path,  "detect_test")
 
-write_text_file(team_train_path,  "team_train")
+# write_text_file(team_train_path,  "team_train")
 
-write_text_file(team_test_path,  "team_test")
+# write_text_file(team_test_path,  "team_test")
 

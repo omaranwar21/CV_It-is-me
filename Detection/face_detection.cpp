@@ -1,15 +1,11 @@
-#include <iostream>
-#include <opencv2/opencv.hpp>
-
-using namespace std;
-using namespace cv;
+#include "face_detection.hpp"
 
 vector<Mat> faces_detection(Mat image)
 {
     vector<Mat> detectedFaces;
     CascadeClassifier face_cascade;
     // face_cascade.load("C:\\Users\\Anwar\\Desktop\\CV Task 5\\haarcascade_frontalface_alt.xml");
-    face_cascade.load("E:\\SBME 6th Term\\Computer Vision\\Projects & Tasks\\CV Final Project\\CV_It-is-me\\haarcascade_frontalface_alt.xml");
+    face_cascade.load("E:\\SBME 6th Term\\Computer Vision\\Projects & Tasks\\CV Final Project\\CV_It-is-me\\Detection\\haarcascade_frontalface_alt.xml");
 
     vector<Rect> faces;
     face_cascade.detectMultiScale(image, faces, 1.1, 2, 0 | CASCADE_SCALE_IMAGE, Size(30, 30));
@@ -26,6 +22,10 @@ vector<Mat> faces_detection(Mat image)
 
     return detectedFaces;
 }
+
+
+
+// // testing
 
 // int main(int, char **)
 // {
