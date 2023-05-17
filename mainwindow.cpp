@@ -9,16 +9,8 @@ MainWindow::MainWindow(QWidget *parent)
 
     ui->liveView->setScene(new QGraphicsScene(this));
 
-    // Read trained model
-    QDir dir(QDir::currentPath());
-    dir.cdUp();
-    QString absolutePath = dir.absoluteFilePath("TrainedModel/haarcascade_frontalface_alt.xml");
-    face_cascade.load(absolutePath.toStdString());
-
-
-    ReadWrite obj("");
-    dataMat = obj.readData();
-    trainImagesNames = obj.readList(":/ImagesLists/team_train.txt");
+    loadTrainedModel();
+    ReadPCAData();
 
 }
 
@@ -39,6 +31,15 @@ void MainWindow::on_UploadDetectionImage_clicked()
 
 }
 
+void MainWindow::on_DetectButton_clicked()
+{
+    if(inputImage.isNull()) return;
+
+    outputDetectionImageMat = Mat::zeros(1, 1, CV_64F);
+    faces_detection(inputDetectionImageMat, outputDetectionImageMat);
+
+    updateImage(outputDetectionImageMat, ui->DetectionOutputImage, 1);
+}
 
 /*
  * ***********************************************************
@@ -71,7 +72,6 @@ void MainWindow::on_backButton_clicked()
  *          Open live camera function for detection and recognition
  * ************************************************************************
 */
-
 void MainWindow::on_openCameraButton_clicked()
 {
     if(video.isOpened())
@@ -105,18 +105,7 @@ void MainWindow::on_openCameraButton_clicked()
 
        if(!frame.empty())
        {
-           std::vector<cv::Rect> faces;
-
-           face_cascade.detectMultiScale(frame, faces, 1.1, 2, 0|cv::CASCADE_SCALE_IMAGE, cv::Size(30, 30));
-
-           for (const auto& face : faces) {
-
-                   cv::rectangle(frame, face, cv::Scalar(0, 255, 0), 2);
-                   // add text on the frame
-                   Mat faceROI = frame(face).clone();
-                   cv::resize(faceROI, faceROI, Size(100,100));
-                   cv::putText(frame, predictFaces(faceROI), cv::Point(face.x, face.y - 5), cv::FONT_HERSHEY_PLAIN, 1.5, cv::Scalar(0, 255, 0), 2);
-            }
+           faces_detection(frame, frame);
 
            QImage qimg(frame.data,
                        frame.cols,
@@ -135,7 +124,6 @@ void MainWindow::on_openCameraButton_clicked()
 
     ui->openCameraButton->setIcon(QIcon(":/Icons/Icons/camera.png"));
 }
-
 void MainWindow::closeEvent(QCloseEvent* event)
 {
     if (video.isOpened())
@@ -151,6 +139,11 @@ void MainWindow::closeEvent(QCloseEvent* event)
     }
 }
 
+/*
+ * ************************************************************************
+ *          Upload Image and Update the UI QLabel
+ * ************************************************************************
+*/
 void MainWindow::uploadImage(QImage &image, Mat &imageMat, QString &imgPath)
 {
     imgPath = QFileDialog::getOpenFileName(this,tr("Open image"));
@@ -165,7 +158,6 @@ void MainWindow::uploadImage(QImage &image, Mat &imageMat, QString &imgPath)
     cv::resize(imageMat, imageMat, cv::Size(512,512), 0, 0);
 
 }
-
 void MainWindow::updateImage(Mat &inputMat,  QLabel* image, bool rgb_flag){
 
     if(rgb_flag){
@@ -176,7 +168,11 @@ void MainWindow::updateImage(Mat &inputMat,  QLabel* image, bool rgb_flag){
     }
 }
 
-
+/*
+ * ************************************************************************
+ *          Predict faces of the inputmat using PCA Model
+ * ************************************************************************
+*/
 string MainWindow::predictFaces(Mat &inputMat){
 
     Mat testWeights = project_image(inputMat, dataMat[0], dataMat[1]);
@@ -189,13 +185,6 @@ string MainWindow::predictFaces(Mat &inputMat){
         string label = string_split(trainImagesNames[min_indexes[i]]);
         myMap[label]++;
     }
-
-
-    // print my map keya nd values
-//    for (auto it = myMap.begin(); it != myMap.end(); ++it)
-//    {
-//        cout << it->first << " " << it->second << endl;
-//    }
 
     // get the key of the max value
     string max_key = "";
@@ -210,4 +199,35 @@ string MainWindow::predictFaces(Mat &inputMat){
     }
     return max_key;
 }
+
+void MainWindow::faces_detection(Mat &image, Mat &resultImage){
+
+    std::vector<cv::Rect> faces;
+    resultImage = image.clone();
+    face_cascade.detectMultiScale(resultImage, faces, 1.1, 2, 0|cv::CASCADE_SCALE_IMAGE, cv::Size(30, 30));
+
+    for (const auto face : faces) {
+
+            cv::rectangle(resultImage, face, cv::Scalar(0, 255, 0), 2);
+
+            // add text on the frame
+            Mat faceROI = resultImage(face).clone();
+            cv::resize(faceROI, faceROI, Size(100,100));
+            cv::putText(resultImage, predictFaces(faceROI), cv::Point(face.x, face.y - 5), cv::FONT_HERSHEY_PLAIN, 1.5, cv::Scalar(0, 255, 0), 2);
+     }
+}
+void MainWindow::loadTrainedModel(){
+    // Read trained model
+    QDir dir(QDir::currentPath());
+    dir.cdUp();
+    QString absolutePath = dir.absoluteFilePath("TrainedModel/haarcascade_frontalface_alt.xml");
+    face_cascade.load(absolutePath.toStdString());
+}
+void MainWindow::ReadPCAData(){
+    ReadWrite obj("");
+    dataMat = obj.readData();
+    trainImagesNames = obj.readList(":/ImagesLists/team_train.txt");
+}
+
+
 

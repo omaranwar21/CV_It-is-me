@@ -41,6 +41,14 @@ private slots:
 
     string predictFaces(Mat &inputMat);
 
+    void loadTrainedModel();
+
+    void ReadPCAData();
+
+    void on_DetectButton_clicked();
+
+    void faces_detection(Mat &image, Mat &resultImage);
+
 private:
 
     Ui::MainWindow *ui;
@@ -51,6 +59,7 @@ private:
     // ----------- Offline Settings ----------
     Mat inputDetectionImageMat = Mat::zeros(1, 1, CV_64F);
     QString detectionPath;
+    Mat outputDetectionImageMat = Mat::zeros(1, 1, CV_64F);
 
     // ----------- Live Settings -------------
     bool startRecording = false;
