@@ -1,0 +1,11 @@
+<RCC>
+    <qresource prefix="/Icons">
+        <file>Icons/back.png</file>
+        <file>Icons/left.png</file>
+        <file>Icons/next.png</file>
+        <file>Icons/right.png</file>
+        <file>Icons/UploadIcon.png</file>
+        <file>Icons/camera.png</file>
+        <file>Icons/stop-button.png</file>
+    </qresource>
+</RCC>

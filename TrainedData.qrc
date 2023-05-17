@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/">
+        <file>TrainedData/eigen.txt</file>
+        <file>TrainedData/mean.txt</file>
+        <file>TrainedData/weights.txt</file>
+    </qresource>
+</RCC>
