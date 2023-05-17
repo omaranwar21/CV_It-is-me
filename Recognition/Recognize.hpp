@@ -1,7 +1,7 @@
 #ifndef RECOGNIZE
 #define RECOGNIZE
 
-#include "common.hpp"
+#include "../common.hpp"
 
 Mat read_test_image(string test_image_name);
 
@@ -15,7 +15,10 @@ Mat project_image(Mat test_image, Mat avgVector, Mat eigenVector);
 
 vector<double> calculate_eucledien_distance(Mat weights, Mat test_weight);
 
-int recognize_face(Mat weights, Mat test_weight);
+vector<double> get_min_k_indexs (vector<double> eucledien_distance);
+
+
+vector<double> recognize_face(Mat weights, Mat test_weight);
 
 vector<string> specify_labels (vector<string> images_files);
 

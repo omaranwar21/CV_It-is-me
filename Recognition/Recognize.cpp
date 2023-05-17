@@ -62,20 +62,42 @@ vector<double> calculate_eucledien_distance(Mat weights, Mat test_weight)
     }
     return eucledien_distance;
 }
+vector<double> get_min_k_indexs (vector<double> eucledien_distance , int k)
+{
+    vector<double> min_k_indexs;
+    vector<double> temp = eucledien_distance;
+    sort(temp.begin(), temp.end());
+    for (int i = 0; i < k; i++)
+    {
+        auto it = find(eucledien_distance.begin(), eucledien_distance.end(), temp[i]);
+        int index = distance(eucledien_distance.begin(), it);
+        min_k_indexs.push_back(index);
+    }
+    return min_k_indexs;
+}
 
 // Recognizes a face using PCA and a set of training images
-int recognize_face(Mat weights, Mat test_weight)
+vector<double> recognize_face(Mat weights, Mat test_weight)
 {
     // calculate eucledien distance
     vector<double> eucledien_distance = calculate_eucledien_distance(weights , test_weight );
 
-    // git index of minimum eucledien distance
-    auto it = min_element(eucledien_distance.begin(), eucledien_distance.end());
-    int min_index = distance(eucledien_distance.begin(), it);
+int  k=  1;
+    // get k min indexes 
+    vector<double> min_indexes = get_min_k_indexs(eucledien_distance , k);
+
+    // // git index of minimum eucledien distance
+    // auto it = min_element(eucledien_distance.begin(), eucledien_distance.end());
+    // int min_index = distance(eucledien_distance.begin(), it);
     // cout << "MIN DISTANCE = " << eucledien_distance[min_index] ;
 
-    return min_index;
+    return min_indexes;
 }
+
+
+
+
+
 
 // function to return label of each training persom
 vector<string> specify_labels (vector<string> images_files)
