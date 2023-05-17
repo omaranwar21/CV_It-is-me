@@ -1,13 +1,5 @@
-#include <iostream>
-#include <fstream>
-#include <vector>
-#include <string>
-#include <numeric>
+#include "../common.hpp"
 
-#include <opencv2/opencv.hpp>
-
-using namespace cv;
-using namespace std;
 
 #define EIGEN_VECTORS_NUMBER 5000
 
