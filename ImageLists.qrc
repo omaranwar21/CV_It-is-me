@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/">
+        <file>ImagesLists/detect_train.txt</file>
+        <file>ImagesLists/team_test.txt</file>
+        <file>ImagesLists/team_train.txt</file>
+    </qresource>
+</RCC>
