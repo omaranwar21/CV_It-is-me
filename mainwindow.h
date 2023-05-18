@@ -49,6 +49,8 @@ private slots:
 
     void faces_detection(Mat &image, Mat &resultImage);
 
+    void on_faceDetectionCheckBox_stateChanged(int arg1);
+
 private:
 
     Ui::MainWindow *ui;
@@ -58,8 +60,10 @@ private:
 
     // ----------- Offline Settings ----------
     Mat inputDetectionImageMat = Mat::zeros(1, 1, CV_64F);
+    Mat clonedInputMat;
     QString detectionPath;
     Mat outputDetectionImageMat = Mat::zeros(1, 1, CV_64F);
+    int checkBox = 0;
 
     // ----------- Live Settings -------------
     bool startRecording = false;

@@ -35,10 +35,19 @@ void MainWindow::on_DetectButton_clicked()
 {
     if(inputImage.isNull()) return;
 
-    outputDetectionImageMat = Mat::zeros(1, 1, CV_64F);
-    faces_detection(inputDetectionImageMat, outputDetectionImageMat);
+    if(checkBox){
+        faces_detection(inputDetectionImageMat, outputDetectionImageMat);
+    }
+    else{
+        outputDetectionImageMat = inputDetectionImageMat.clone();
+        cv::resize(outputDetectionImageMat, outputDetectionImageMat, Size(512, 512));
+        cv::putText(outputDetectionImageMat, predictFaces(inputDetectionImageMat), cv::Point(outputDetectionImageMat.rows / 3, 100), cv::FONT_HERSHEY_PLAIN, 1.5, cv::Scalar(0, 255, 0), 3);
+    }
 
     updateImage(outputDetectionImageMat, ui->DetectionOutputImage, 1);
+
+    outputDetectionImageMat = Mat::zeros(1, 1, CV_64F);
+
 }
 
 /*
@@ -155,27 +164,30 @@ void MainWindow::uploadImage(QImage &image, Mat &imageMat, QString &imgPath)
     imageMat = Mat(image.height(), image.width(), CV_8UC3, image.bits(), image.bytesPerLine());
 
     if(image.isNull()) return;
-    cv::resize(imageMat, imageMat, cv::Size(512,512), 0, 0);
-
 }
 void MainWindow::updateImage(Mat &inputMat,  QLabel* image, bool rgb_flag){
 
+    Mat clonedMat = inputMat.clone();
+    cv::resize(clonedMat, clonedMat, Size(512,512));
     if(rgb_flag){
-        image->setPixmap(QPixmap::fromImage(QImage(inputMat.data, inputMat.cols, inputMat.rows, inputMat.step, QImage::Format_BGR888)));
+        image->setPixmap(QPixmap::fromImage(QImage(clonedMat.data, clonedMat.cols, clonedMat.rows, clonedMat.step, QImage::Format_BGR888)));
     }
     else{
-        image->setPixmap(QPixmap::fromImage(QImage(inputMat.data, inputMat.cols, inputMat.rows, inputMat.step, QImage::Format_Grayscale8)));
+        image->setPixmap(QPixmap::fromImage(QImage(clonedMat.data, clonedMat.cols, clonedMat.rows, clonedMat.step, QImage::Format_Grayscale8)));
     }
 }
 
 /*
  * ************************************************************************
- *          Predict faces of the inputmat using PCA Model
+ *          Predict faces of the input matrix using PCA Model
  * ************************************************************************
 */
 string MainWindow::predictFaces(Mat &inputMat){
 
-    Mat testWeights = project_image(inputMat, dataMat[0], dataMat[1]);
+    Mat resizedInputMat = inputMat.clone();
+    cv::resize(resizedInputMat, resizedInputMat, Size(100,100));
+
+    Mat testWeights = project_image(resizedInputMat, dataMat[0], dataMat[1]);
     vector<double> min_indexes = recognize_face(dataMat[2], testWeights);
 
     // map
@@ -199,7 +211,6 @@ string MainWindow::predictFaces(Mat &inputMat){
     }
     return max_key;
 }
-
 void MainWindow::faces_detection(Mat &image, Mat &resultImage){
 
     std::vector<cv::Rect> faces;
@@ -213,7 +224,7 @@ void MainWindow::faces_detection(Mat &image, Mat &resultImage){
             // add text on the frame
             Mat faceROI = resultImage(face).clone();
             cv::resize(faceROI, faceROI, Size(100,100));
-            cv::putText(resultImage, predictFaces(faceROI), cv::Point(face.x, face.y - 5), cv::FONT_HERSHEY_PLAIN, 1.5, cv::Scalar(0, 255, 0), 2);
+            cv::putText(resultImage, predictFaces(faceROI), cv::Point(face.x, face.y - 5), cv::FONT_HERSHEY_PLAIN, 2.5, cv::Scalar(0, 255, 0), 3);
      }
 }
 void MainWindow::loadTrainedModel(){
@@ -228,6 +239,10 @@ void MainWindow::ReadPCAData(){
     dataMat = obj.readData();
     trainImagesNames = obj.readList(":/ImagesLists/team_train.txt");
 }
+void MainWindow::on_faceDetectionCheckBox_stateChanged(int arg1)
+{
+    checkBox = arg1;
 
-
+    qDebug() << QString::number(checkBox);
+}
 
