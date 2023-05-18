@@ -1,8 +1,7 @@
-#include "PCA/PCA_Reduced/PCA_Reduced.hpp"
+//#include "PCA/PCA_Reduced/PCA_Reduced.hpp"
 #include "ReadWrite/ReadWrite.hpp"
-#include "recg
 
-#include "common.hpp"
+#include "Common/common.hpp"
 
 
 

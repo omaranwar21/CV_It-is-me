@@ -231,7 +231,7 @@ void MainWindow::loadTrainedModel(){
     // Read trained model
     QDir dir(QDir::currentPath());
     dir.cdUp();
-    QString absolutePath = dir.absoluteFilePath("TrainedModel/haarcascade_frontalface_alt.xml");
+    QString absolutePath = dir.absoluteFilePath("CV_It-is-me/TrainedModel/haarcascade_frontalface_alt.xml");
     face_cascade.load(absolutePath.toStdString());
 }
 void MainWindow::ReadPCAData(){
