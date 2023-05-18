@@ -55,12 +55,38 @@ void train_PCA::computeBestEigenVectors()
     // Get all eigenvalues and eigenvectors from covariance matrix
     eigen(this->covarianceMatrix, this->allEigenValues, this->allEigenVectors);
 
+    // Keep all vectors summing up eigen values to 90% and remove the rest
+    double sum = 0;
+    // int eigenVectorsNumber = 0;
+    // calculate all eigen values sum
+    double all_values_sum = 0;
+    for (int i = 0; i < this->allEigenValues.rows; i++)
+    {
+        all_values_sum += this->allEigenValues.at<float>(i, 0);
+    }
+    // calculate the number of eigen vectors that summing up eigen values to 90%
+
+    int eigenVectorsNumber = 0;
+
+    for (int i = 0; i < this->allEigenValues.rows; i++)
+    {
+        sum += this->allEigenValues.at<float>(i, 0);
+        eigenVectorsNumber++;
+        if (sum >= 0.9 * all_values_sum )
+        {
+            break;
+        }
+    }
+
+    cout << "EIgen Vectors to  90% : "  << eigenVectorsNumber << endl;
+
     // select best k eigen vectors
-    this->K_eigen_vectors = Mat::zeros(EIGEN_VECTORS_NUMBER, this->allEigenVectors.cols, CV_32FC1);
-    this->allEigenVectors.rowRange(Range(0, EIGEN_VECTORS_NUMBER)).copyTo(this->K_eigen_vectors);
+    this->K_eigen_vectors = Mat::zeros(eigenVectorsNumber, this->allEigenVectors.cols, CV_32FC1);
+    this->allEigenVectors.rowRange(Range(0, eigenVectorsNumber)).copyTo(this->K_eigen_vectors);
 
     // convert lower dimension to original dimension
     this->eigenVector = this->K_eigen_vectors * (this->normalizedMatrix.t());
+    // this->eigenVector = this->allEigenVectors * (this->normalizedMatrix.t());
 
     this->weights = this->normalizedMatrix.t() * this->eigenVector.t();
 }

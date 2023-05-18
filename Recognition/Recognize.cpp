@@ -73,6 +73,22 @@ vector<double> get_min_k_indexs (vector<double> eucledien_distance , int k)
         int index = distance(eucledien_distance.begin(), it);
         min_k_indexs.push_back(index);
     }
+    // print minimum distance
+    cout << eucledien_distance[min_k_indexs[0]]<<endl;
+
+    // if eucledien ,more than variable max
+    // cout <<  2.00246e+07<<  endl;
+    double in_group= 1;
+    // in group
+
+    if ((eucledien_distance[min_k_indexs[0]])  > 2.90246e+07 )
+    {
+        in_group=  0;
+        cout << "OUT OF GROUP" << endl;
+    }
+    // min_k_indexs.push_back(in_group);
+
+
     return min_k_indexs;
 }
 
@@ -86,6 +102,8 @@ int  k=  1;
     // get k min indexes 
     vector<double> min_indexes = get_min_k_indexs(eucledien_distance , k);
 
+
+
     // // git index of minimum eucledien distance
     // auto it = min_element(eucledien_distance.begin(), eucledien_distance.end());
     // int min_index = distance(eucledien_distance.begin(), it);
@@ -93,9 +111,6 @@ int  k=  1;
 
     return min_indexes;
 }
-
-
-
 
 
 

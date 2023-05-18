@@ -57,6 +57,8 @@ int main(int argc, char const *argv[])
     vector<string> test_files = r1.readList(test_script_file);
     vector<Mat> test_images = r1.readImages(test_dir, test_files);
 
+    
+
 
     vector<int> test_pass;
     // loop over test imags to start recognition
@@ -126,6 +128,18 @@ int main(int argc, char const *argv[])
 
 
 
+    // // print test pass
+    // for (int i = 0; i < test_pass.size(); i++){
+    //     cout << test_pass[i] << endl;
+    // }
+
+    // // print test pass size
+    // cout << test_pass.size() << endl;
+    // // print accumulate
+    // cout << std::accumulate(test_pass.begin(), test_pass.end(), 0.0) << endl;
+
+
+
 
 
 
@@ -134,15 +148,48 @@ int main(int argc, char const *argv[])
     // // loop over test imags to start recognition
     // for (int i = 0; i < test_files.size(); i++)
     // {
+
+    //     string test = string_split(test_files[i]);
     //     Mat test_weight = project_image(test_images[i], data[0], data[1]);
     //     cout << "------------------------------------------------------------------" << endl;
     //     /* 4 - Recognition  */
-    //     int index = recognize_face(data[2], test_weight);
+    //     vector<double> k_min_indexes = recognize_face(data[2], test_weight);
 
-    //     // string label = recognize_face(Training_images_weights, test_weights, labels);44
-    //     string test = string_split(test_files[i]);
-    //     string predicted = string_split(train_files[index]);
+    //     // map 
+    //     map<string, int> myMap;
+    //     for (int i = 0; i < k_min_indexes.size(); i++)
+    //     {
+    //         string label = string_split(train_files[k_min_indexes[i]]);
+    //         myMap[label]++;
+    //     }   
+    //     // print my map keya nd values
 
+        
+    //     for (auto it = myMap.begin(); it != myMap.end(); ++it)
+    //     {
+    //         cout << it->first << " " << it->second << endl;
+    //     }
+
+    //     // get the key of the max value
+    //     string max_key = "";
+    //     int max_value = 0;
+    //     for (auto it = myMap.begin(); it != myMap.end(); ++it)
+    //     {
+    //         if (it->second > max_value)
+    //         {
+    //             max_value = it->second;
+    //             max_key = it->first;
+    //         }
+    //     }
+
+    //     string predicted = max_key;
+
+
+    //     // // string label = recognize_face(Training_images_weights, test_weights, labels);44
+    //     // string test = string_split(test_files[i]);
+    //     // string predicted = string_split(train_files[index]);
+
+    //     // cout << "Test : " << test << " Predicted : " << predicted << endl;
     //     cout << "Test : " << test << " Predicted : " << predicted << endl;
     //     if (test == predicted)
     //     {
@@ -156,7 +203,7 @@ int main(int argc, char const *argv[])
     //         // cout << cut.compare(h) << endl ;
     //     }
 
-    //     cout << " Recognized face in " << test_files[i] << " as " << train_files[index] << " by index : " << index << endl;
+    //     // cout << " Recognized face in " << test_files[i] << " as " << train_files[index] << " by index : " << index << endl;
     // }
 
     //     // test_pass.

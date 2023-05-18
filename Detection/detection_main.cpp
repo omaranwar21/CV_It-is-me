@@ -62,9 +62,9 @@ int main(int, char **)
         vector<Mat> detectedFaces;
         detectedFaces = faces_detection(image);
 
-        // print image
-        imshow("Image", image);
-        waitKey(0);
+        // // print image
+        // imshow("Image", image);
+        // waitKey(0);
 
         // namedWindow("Face_detection ", WINDOW_NORMAL);
         // imshow("Face_detection", detectedFaces[0]);
