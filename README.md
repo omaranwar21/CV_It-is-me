@@ -35,7 +35,7 @@ In this project:
 
 
 ### Project Structure
-Imgpro is built using:
+The Application is built using:
 - C++/Opencv:
   - Opencv 14/15/16 versions
 
