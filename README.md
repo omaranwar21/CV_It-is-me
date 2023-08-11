@@ -9,10 +9,11 @@
 - [Run the project](#Run-the-project)
 - [Try a demo](#Try-a-demo)
 - [Team]()
-
+***
 
 ### Introduction
 Our application uses C++ language that focuses on face detection and recognition using PCA/Eigen analysis. This project aims to provide robust and efficient methods for detecting and recognizing faces in color and grayscale images. Our application leverages the power of C++ to deliver high-performance algorithms and accurate results.
+***
 
 ### Project Features
 In this project:
@@ -33,7 +34,7 @@ In this project:
     curves are widely used in evaluating the effectiveness of face recognition systems.
 
 
-
+***
 ### Project Structure
 The Application is built using:
 - C++/Opencv:
@@ -68,30 +69,35 @@ The Application is built using:
 │  └─  Common
 README.md
 ```
+***
 
 ### Quick Preview
 
-#### Application.
+#### Application
 ![app](https://github.com/omaranwar21/CV_It-is-me/assets/94166833/935b3ea3-98a0-4b93-a00a-3a10b973f597)
-#### Face Detection.
+#### Face Detection
 ![Face Detection](https://github.com/omaranwar21/CV_It-is-me/assets/94166833/ab0a9c45-f256-404b-8ca2-b4ceac5458c9)
-#### Offline Face Detection and Recognition.
+#### Offline Face Detection and Recognition
 ![offline detection   recognition](https://github.com/omaranwar21/CV_It-is-me/assets/94166833/5db74e4e-b3d3-41cb-bcc6-518965d5539e)
-#### Live Face Detection and Recognition.
+#### Live Face Detection and Recognition
 ![live recognition](https://github.com/omaranwar21/CV_It-is-me/assets/94166833/a0d888fe-ca68-4736-a850-6f3b9a3c3ed9)
 
+***
 ### Requirements to run 
 
 [ Qt Setup and openCV ](https://github.com/Dinahussam/Impro-App/files/10972282/Qt.Setup.and.openCV.pdf)
 
+***
 
 ### Run the project
 
+***
 
 ### Try a demo
 
 [ Download Here !]
 
+***
 
 ### Team
 
